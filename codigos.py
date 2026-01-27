@@ -83,14 +83,109 @@ def base64ToBinary(base64_text):
         binary_result += base64ValueToBinary(base64_value)
     return binary_result
 
-def binaryToAscii(number):
-    
-    pass
+def binaryToDecimal(binary_str):
+    if not binary_str:
+        return 0
 
-def binaryToBase64():
-    pass
+    decimal = 0
+    power = 0
+
+    for i in range(len(binary_str) - 1, -1, -1):
+        if binary_str[i] == '1':
+            value = 1
+            for _ in range(power):
+                value = value * 2
+            decimal += value
+        power += 1
+
+    return decimal
 
 
-text = "VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wcyBvdmVyIDEzIGxhenkgZG9ncy4="
-binary_output = base64ToBinary(text)
-print(binary_output)  
+def asciiValueToChar(ascii_value):
+    char_map = {
+        32: ' ', 33: '!', 34: '"', 35: '#', 36: '$', 37: '%', 38: '&', 39: "'",
+        40: '(', 41: ')', 42: '*', 43: '+', 44: ',', 45: '-', 46: '.', 47: '/',
+        48: '0', 49: '1', 50: '2', 51: '3', 52: '4', 53: '5', 54: '6', 55: '7',
+        56: '8', 57: '9', 58: ':', 59: ';', 60: '<', 61: '=', 62: '>', 63: '?',
+        64: '@', 65: 'A', 66: 'B', 67: 'C', 68: 'D', 69: 'E', 70: 'F', 71: 'G',
+        72: 'H', 73: 'I', 74: 'J', 75: 'K', 76: 'L', 77: 'M', 78: 'N', 79: 'O',
+        80: 'P', 81: 'Q', 82: 'R', 83: 'S', 84: 'T', 85: 'U', 86: 'V', 87: 'W',
+        88: 'X', 89: 'Y', 90: 'Z', 91: '[', 92: '\\', 93: ']', 94: '^', 95: '_',
+        96: '`', 97: 'a', 98: 'b', 99: 'c', 100: 'd', 101: 'e', 102: 'f', 103: 'g',
+        104: 'h', 105: 'i', 106: 'j', 107: 'k', 108: 'l', 109: 'm', 110: 'n', 111: 'o',
+        112: 'p', 113: 'q', 114: 'r', 115: 's', 116: 't', 117: 'u', 118: 'v', 119: 'w',
+        120: 'x', 121: 'y', 122: 'z', 123: '{', 124: '|', 125: '}', 126: '~'
+    }
+    return char_map.get(ascii_value, '?')
+
+
+def base64ValueToChar(value):
+    base64_chars = [
+        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+        'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+        'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
+        'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f',
+        'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
+        'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
+        'w', 'x', 'y', 'z', '0', '1', '2', '3',
+        '4', '5', '6', '7', '8', '9', '+', '/'
+    ]
+    if 0 <= value <= 63:
+        return base64_chars[value]
+    return ''
+
+
+def binaryToAscii(binary_str):
+    if not binary_str:
+        return ''
+
+    binary_str = binary_str.replace(' ', '')
+
+    if len(binary_str) % 8 != 0:
+        return 'Error: El binario debe ser múltiplo de 8 bits'
+
+    result = ''
+
+    for i in range(0, len(binary_str), 8):
+        byte = binary_str[i:i+8]
+        decimal_value = binaryToDecimal(byte)
+        char = asciiValueToChar(decimal_value)
+        result += char
+
+    return result
+
+def binaryToBase64(binary_str):
+    """Convierte un string binario a Base64"""
+    if not binary_str:
+        return ''
+
+    binary_str = binary_str.replace(' ', '')
+
+    remainder = len(binary_str) % 6
+
+    if remainder != 0:
+        padding_bits = 6 - remainder
+        binary_str += '0' * padding_bits
+
+    result = ''
+    padding_chars = 0
+
+    original_length = len(binary_str) - (padding_bits if remainder != 0 else 0)
+
+    if remainder != 0:
+        bytes_remainder = original_length % 24
+        if bytes_remainder == 8:  
+            padding_chars = 2
+        elif bytes_remainder == 16:  
+            padding_chars = 1
+
+    for i in range(0, len(binary_str), 6):
+        sextet = binary_str[i:i+6]
+        if len(sextet) == 6:
+            decimal_value = binaryToDecimal(sextet)
+            char = base64ValueToChar(decimal_value)
+            result += char
+
+    result += '=' * padding_chars
+
+    return result
