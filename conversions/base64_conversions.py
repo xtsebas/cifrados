@@ -68,3 +68,23 @@ def binaryToBase64(binary_str):
         result += '=' * padding_chars
 
     return result
+
+
+def base64ToAscii(base64_text):
+    from conversions.ascii_conversions import binaryToAscii
+
+    binary_str = base64ToBinary(base64_text)
+
+    padding_count = 0
+    for char in base64_text:
+        if char == '=':
+            padding_count += 1
+
+    if padding_count == 1:
+        binary_str = binary_str[:-2]
+    elif padding_count == 2:
+        binary_str = binary_str[:-4]
+
+    ascii_text = binaryToAscii(binary_str)
+
+    return ascii_text

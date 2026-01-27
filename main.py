@@ -1,5 +1,5 @@
 from conversions.ascii_conversions import asciiToBinary, binaryToAscii
-from conversions.base64_conversions import base64ToBinary, binaryToBase64
+from conversions.base64_conversions import base64ToBinary, binaryToBase64, base64ToAscii
 
 
 def print_separator():
@@ -63,6 +63,35 @@ def test_base64_conversions():
     print(f"Conversion correcta: {base64_text2 == back_to_base64_2}")
 
 
+def test_base64_to_ascii_direct():
+    print_separator()
+    print("PRUEBAS DE BASE64 -> ASCII (DIRECTO)")
+    print_separator()
+
+    # Prueba 1: Texto simple
+    base64_1 = "SGVsbG8="
+    print(f"Base64: {base64_1}")
+    ascii_1 = base64ToAscii(base64_1)
+    print(f"ASCII: '{ascii_1}'")
+    print(f"(Pasa por binario internamente)")
+
+    print_separator()
+
+    # Prueba 2: Texto más largo
+    base64_2 = "VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wcyBvdmVyIDEzIGxhenkgZG9ncy4="
+    print(f"Base64: {base64_2}")
+    ascii_2 = base64ToAscii(base64_2)
+    print(f"ASCII: '{ascii_2}'")
+
+    print_separator()
+
+    # Prueba 3: Palabra simple
+    base64_3 = "UHl0aG9u"
+    print(f"Base64: {base64_3}")
+    ascii_3 = base64ToAscii(base64_3)
+    print(f"ASCII: '{ascii_3}'")
+
+
 def test_combined_conversions():
     print_separator()
     print("PRUEBAS DE CONVERSIONES COMBINADAS")
@@ -98,4 +127,5 @@ if __name__ == "__main__":
 
     test_ascii_conversions()
     test_base64_conversions()
+    test_base64_to_ascii_direct()
     test_combined_conversions()
