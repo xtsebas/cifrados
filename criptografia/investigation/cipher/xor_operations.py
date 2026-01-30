@@ -38,7 +38,7 @@ def xorBinaryWithKey(binary, key):
 
 
 def xorTextWithKey(text, key):
-    from conversions.ascii_conversions import asciiToBinary
+    from criptografia.conversions.ascii_conversions import asciiToBinary
 
     binary_text = asciiToBinary(text)
     binary_key = asciiToBinary(key)
@@ -49,7 +49,7 @@ def xorTextWithKey(text, key):
 
 
 def xorTextComplete(text, key):
-    from conversions.ascii_conversions import asciiToBinary, binaryToAscii
+    from criptografia.conversions.ascii_conversions import asciiToBinary, binaryToAscii
 
     binary_text = asciiToBinary(text)
     binary_key = asciiToBinary(key)

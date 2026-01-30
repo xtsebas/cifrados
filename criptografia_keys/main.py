@@ -54,5 +54,45 @@ for length in [8, 16, 32, 64]:
     key = generator.generate_random_key(length, 'alphanumeric')
     print(f"Longitud {length:2d}: {key}")
     
-print("Ejemplos completados. Todas las llaves utilizan caracteres ASCII.")
+print("\n" + "="*70)
+print("    EJEMPLOS DE CIFRADO CON LLAVES")
+print("="*70)
+
+from fixed_key_cipher import FixedKeyCipher
+from dynamic_key_cipher import DynamicKeyCipher
+
+print("\nCIFRADO CON LLAVE FIJA")
+print("-" * 70)
+
+fixed_cipher = FixedKeyCipher(20)
+fixed_key = fixed_cipher.generate_fixed_key('alphanumeric')
+message_fixed = "Hola Mundo!"
+
+print(f"Llave fija ({len(fixed_key)} chars): {fixed_key}")
+print(f"Mensaje original: '{message_fixed}'")
+
+encrypted_fixed = fixed_cipher.encrypt_xor(message_fixed)
+decrypted_fixed = fixed_cipher.decrypt_xor(encrypted_fixed)
+
+print(f"Cifrado XOR:      '{encrypted_fixed}'")
+print(f"Descifrado:       '{decrypted_fixed}'")
+
+print("\nCIFRADO CON LLAVE DINÁMICA")
+print("-" * 70)
+
+dynamic_cipher = DynamicKeyCipher()
+dynamic_key = dynamic_cipher.generate_dynamic_key(5, 'alphanumeric')
+message_dynamic = "Mensaje largo con llave corta!"
+
+print(f"Llave dinámica ({len(dynamic_key)} chars): {dynamic_key}")
+print(f"Mensaje original: '{message_dynamic}'")
+
+encrypted_dynamic = dynamic_cipher.encrypt_xor(message_dynamic)
+decrypted_dynamic = dynamic_cipher.decrypt_xor(encrypted_dynamic)
+
+print(f"Cifrado XOR:      '{encrypted_dynamic}'")
+print(f"Descifrado:       '{decrypted_dynamic}'")
+
+print("\n" + "="*70)
+print("Ejemplos completados.")
 print("="*70 + "\n")
