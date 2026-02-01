@@ -118,23 +118,6 @@ Si deseas contribuir al proyecto, por favor sigue los siguientes pasos:
 4.	Haz push a la rama (git push origin feature/nueva-funcionalidad).
 5.	Abre un Pull Request.
 
-### Developer's
-
-<a href="https://github.com/locano">
-  <img width='75' src="https://avatars.githubusercontent.com/u/16949087?v=4" alt="Ludwing Cano" />
-</a>
-
-* [![Linkedin][Linkedin]][Linkedin-lud]
-* [![GitHub][GitHub]][GitHub-lud]
-
-<p align="right">(<a href="#readme-top">Ir al inicio</a>)</p>
-
-## 📞 Contacto
-Si tienes preguntas o comentarios, puedes contactarnos a traves de nuestras redes sociales:
-
-* [![Instagram][Instagram]][Instagram-url]
-* [![Website][Website]][Website-url]
-
 <p align="right">(<a href="#readme-top">Ir al inicio</a>)</p>
 
 
