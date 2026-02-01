@@ -1,5 +1,8 @@
+import sys
+sys.path.insert(0, '..')
 import time
 from dynamics_keys import DynamicKeyGenerator
+from criptografia.conversions.ascii_conversions import charToAscii
 
 
 print("\n" + "="*70)
@@ -13,7 +16,7 @@ print("-" * 70)
 
 random_key = generator.generate_random_key(16, 'all')
 print(f"Llave de 16 caracteres (todos): {random_key}")
-print(f"Longitud: {len(random_key)} | Valores ASCII: {[ord(c) for c in random_key[:5]]}...")
+print(f"Longitud: {len(random_key)} | Valores ASCII: {[charToAscii(c) for c in random_key[:5]]}...")
 
 print("\nLLAVES CON DIFERENTES CONJUNTOS DE CARACTERES")
 print("-" * 70)

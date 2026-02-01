@@ -1,6 +1,6 @@
-from conversions.ascii_conversions import asciiToBinary, binaryToAscii
-from conversions.base64_conversions import base64ToBinary, binaryToBase64, base64ToAscii
-from cipher.xor_operations import xorBit, xorBinary, xorBinaryWithKey, xorTextWithKey, xorTextComplete
+from criptografia.conversions.ascii_conversions import asciiToBinary, binaryToAscii
+from criptografia.conversions.base64_conversions import base64ToBinary, binaryToBase64, base64ToAscii
+from criptografia.investigation.cipher.xor_operations import xorBit, xorBinary, xorBinaryWithKey, xorTextWithKey, xorTextComplete
 
 
 def print_separator():

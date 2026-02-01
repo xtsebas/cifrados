@@ -1,16 +1,27 @@
 from criptografia.utils.binary_utils import binaryToDecimal, decimalToBinary
 
 def charToAscii(char):
-    # Use Python's built-in ord() to handle all ASCII values (0-255)
     return ord(char)
 
 
 def asciiValueToChar(ascii_value):
-    # Use Python's built-in chr() to handle all ASCII values (0-255)
-    # Clamp to valid range to avoid errors
     if 0 <= ascii_value <= 255:
         return chr(ascii_value)
     return '?'
+
+
+def charToUppercase(char):
+    ascii_value = charToAscii(char)
+    if 97 <= ascii_value <= 122:
+        return asciiValueToChar(ascii_value - 32)
+    return char
+
+
+def stringToUppercase(text):
+    result = ""
+    for char in text:
+        result += charToUppercase(char)
+    return result
 
 
 def asciiToBinary(text):
