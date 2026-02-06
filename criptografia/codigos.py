@@ -1,10 +1,10 @@
-from criptografia.conversions.ascii_conversions import (
+from conversions.ascii_conversions import (
     charToAscii, asciiValueToChar, asciiToBinary, binaryToAscii
 )
-from criptografia.conversions.base64_conversions import (
+from conversions.base64_conversions import (
     charToBase64Value, base64ValueToChar, base64ToBinary, binaryToBase64
 )
-from criptografia.utils.binary_utils import binaryToDecimal, decimalToBinary
+from .utils.binary_utils import binaryToDecimal, decimalToBinary
 
 def textToBinary(text):
     return asciiToBinary(text)

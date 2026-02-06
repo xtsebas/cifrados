@@ -1,4 +1,4 @@
-from criptografia.utils.binary_utils import binaryToDecimal, decimalToBinary
+from ..utils.binary_utils import binaryToDecimal, decimalToBinary
 
 
 def charToBase64Value(char):

@@ -1,6 +1,6 @@
-from criptografia.conversions.ascii_conversions import asciiToBinary, binaryToAscii
-from criptografia.conversions.base64_conversions import base64ToBinary, binaryToBase64, base64ToAscii
-from criptografia.investigation.cipher.xor_operations import xorBit, xorBinary, xorBinaryWithKey, xorTextWithKey, xorTextComplete
+from conversions.ascii_conversions import asciiToBinary, binaryToAscii
+from conversions.base64_conversions import base64ToBinary, binaryToBase64, base64ToAscii
+from investigation.cipher.xor_operations import xorBit, xorBinary, xorBinaryWithKey, xorTextWithKey, xorTextComplete
 
 
 def print_separator():
@@ -70,27 +70,27 @@ def test_base64_to_ascii_direct():
     print_separator()
 
     # Prueba 1: Texto simple
-    base64_1 = "SGVsbG8="
+    base64_1 = "RkxBR3tCQVNFNjRfREVTQ0lGUkFET30K"
     print(f"Base64: {base64_1}")
     ascii_1 = base64ToAscii(base64_1)
     print(f"ASCII: '{ascii_1}'")
     print(f"(Pasa por binario internamente)")
 
-    print_separator()
+    # print_separator()
 
-    # Prueba 2: Texto más largo
-    base64_2 = "VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wcyBvdmVyIDEzIGxhenkgZG9ncy4="
-    print(f"Base64: {base64_2}")
-    ascii_2 = base64ToAscii(base64_2)
-    print(f"ASCII: '{ascii_2}'")
+    # # Prueba 2: Texto más largo
+    # base64_2 = "VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wcyBvdmVyIDEzIGxhenkgZG9ncy4="
+    # print(f"Base64: {base64_2}")
+    # ascii_2 = base64ToAscii(base64_2)
+    # print(f"ASCII: '{ascii_2}'")
 
-    print_separator()
+    # print_separator()
 
-    # Prueba 3: Palabra simple
-    base64_3 = "UHl0aG9u"
-    print(f"Base64: {base64_3}")
-    ascii_3 = base64ToAscii(base64_3)
-    print(f"ASCII: '{ascii_3}'")
+    # # Prueba 3: Palabra simple
+    # base64_3 = "UHl0aG9u"
+    # print(f"Base64: {base64_3}")
+    # ascii_3 = base64ToAscii(base64_3)
+    # print(f"ASCII: '{ascii_3}'")
 
 
 def test_combined_conversions():
@@ -254,10 +254,10 @@ if __name__ == "__main__":
     print(" SISTEMA DE CONVERSIONES Y CIFRADO MANUAL")
     print("=" * 60)
 
-    test_ascii_conversions()
-    test_base64_conversions()
-    test_base64_to_ascii_direct()
-    test_combined_conversions()
-    test_xor_operations()
-    test_xor_properties()
-    test_xor_with_conversions()
+    # test_ascii_conversions()
+    # test_base64_conversions()
+    # test_base64_to_ascii_direct()
+    # test_combined_conversions()
+    # test_xor_operations()
+    # test_xor_properties()
+    # test_xor_with_conversions()

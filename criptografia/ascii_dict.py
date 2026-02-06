@@ -1,4 +1,4 @@
-from criptografia.conversions.ascii_conversions import asciiValueToChar
+from conversions.ascii_conversions import asciiValueToChar
 
 ASCII_TO_BINARY = {}
 for i in range(128):
