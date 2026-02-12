@@ -29,8 +29,9 @@ def decrypt(encrypted, key):
 
 if __name__ == "__main__":
     key = "my_secret_key"
-    plaintext = "Hello, World!"
-    encrypted = encrypt(plaintext, key)
+    original = "Hello, World!"
+    print(f"Original: {original}")
+    encrypted = encrypt(original, key)
     print(f"Encrypted: {encrypted}")
     decrypted = decrypt(encrypted, key)
     print(f"Decrypted: {decrypted}")
