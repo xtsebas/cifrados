@@ -5,7 +5,7 @@
 ## Parte 2: Análisis de Seguridad (20 puntos)
 
 ### 2.1 Variación de la Clave (5 puntos)
-    - ¿Qué sucede cuando cambia la clave utilizada para generar el keystream? Demuestre con un ejemplo concreto.
+- ¿Qué sucede cuando cambia la clave utilizada para generar el keystream? Demuestre con un ejemplo concreto.
 
 ![code](image.png)
 ![output](image-1.png)
@@ -14,8 +14,8 @@ Cuando se cambia la llave para desencriptar, genera un keystream diferente al qu
 
 
 ### 2.2 Reutilización del Keystream (5 puntos)
-    - ¿Qué riesgos de seguridad existen si reutiliza el mismo keystream para cifrar dos mensajes diferentes? Implemente un ejemplo que demuestre esta vulnerabilidad.
-    - Sugerencia: Cifre dos mensajes con la misma clave y analice qué información puede extraer un atacante que intercepte ambos textos cifrados.
+- ¿Qué riesgos de seguridad existen si reutiliza el mismo keystream para cifrar dos mensajes diferentes? Implemente un ejemplo que demuestre esta vulnerabilidad.
+- Sugerencia: Cifre dos mensajes con la misma clave y analice qué información puede extraer un atacante que intercepte ambos textos cifrados.
 
 ![security](image-2.png)
 
