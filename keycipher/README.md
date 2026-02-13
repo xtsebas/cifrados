@@ -6,8 +6,9 @@
 
 ### 2.1 Variación de la Clave (5 puntos)
     - ¿Qué sucede cuando cambia la clave utilizada para generar el keystream? Demuestre con un ejemplo concreto.
-    ![code](image.png)
-    ![output](image-1.png)
+
+![code](image.png)
+![output](image-1.png)
 
 ### 2.2 Reutilización del Keystream (5 puntos)
     - ¿Qué riesgos de seguridad existen si reutiliza el mismo keystream para cifrar dos mensajes diferentes? Implemente un ejemplo que demuestre esta vulnerabilidad.
