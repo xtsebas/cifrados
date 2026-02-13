@@ -23,7 +23,16 @@ Cuando se reutilizo el mismo keystream para cifrar dos mensajes distintos, se es
 
 
 ### 2.3 Longitud del Keystream (5 puntos)
-    -¿Cómo afecta la longitud del keystream a la seguridad del cifrado? Considere tanto keystreams más cortos como más largos que el mensaje.
+-¿Cómo afecta la longitud del keystream a la seguridad del cifrado? Considere tanto keystreams más cortos como más largos que el mensaje.
+
+![lenght](image-3.png)
+
+La longitud del keystream afecta directamente la seguridad porque si es mas corto que el mensaje y se reutiliza o se repite, empiezan a aparecer patrones que pueden ser explotados por un atacante mediante analisis de XOR entre bloques repetidos. Si el keystream tiene la misma longitud que el mensaje y es verdaderamente aleatorio y no se reutiliza, el cifrado es mucho mas seguro, similar a un one time pad. Si es mas largo no hay problema mientras solo se use la parte necesaria y no se reutilice, pero lo critico no es que sea largo sino que no se repita ni se use la misma secuencia para distintos mensajes
+
 
 ### 2.4 Consideraciones Prácticas (5 puntos)
-    - ¿Qué consideraciones debe tener al generar un keystream en un entorno de producción real?Mencione al menos 3 aspectos críticos
+- ¿Qué consideraciones debe tener al generar un keystream en un entorno de producción real? Mencione al menos 3 aspectos críticos
+
+    * Usar un generador criptograficamente seguro para que el keystream no sea predecible
+    * No reutilizar el mismo keystream en diferentes mensajes
+    * Proteger y generar las claves con suficiente entropia para evitar filtraciones o ataques de fuerza bruta

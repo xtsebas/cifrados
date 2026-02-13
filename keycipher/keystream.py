@@ -28,19 +28,26 @@ def decrypt(encrypted, key):
     return ''.join(decrypted_chars)
 
 if __name__ == "__main__":
-    key = "my_secret_key"
-    message1 = "Hello, World!"
-    message2 = "Bye, World!"
-    print(f"First Message: {message1}")
-    encrypted = encrypt(message1, key)
+    key = "no"
+    original = "Hello, World!"
+    print("CIFRADO CON KEYSTREAM CORTO")
+    print(f"Original: {original}")
+    encrypted = encrypt(original, key)
     print(f"Encrypted: {encrypted}")
-
-    print(f"Second Message: {message2}")
-    encrypted2 = encrypt(message2, key)
-    print(f"Encrypted: {encrypted2}")
-
     decrypted = decrypt(encrypted, key)
-    print(f"Decrypted : {decrypted}")
+    print(f"Decrypted: {decrypted}")
 
-    decrypted2 = decrypt(encrypted2, key)
-    print(f"Decrypted : {decrypted2}")
+    print("\nCIFRADO CON KEYSTREAM MEDIO")
+    key = "my_secret_key_medium_length"
+    encrypted = encrypt(original, key)
+    print(f"Encrypted: {encrypted}")
+    decrypted = decrypt(encrypted, key)
+    print(f"Decrypted: {decrypted}")
+
+    print("\nCIFRADO CON KEYSTREAM LARGO")
+    key = "my_very_long_secret_key_that_is_longer_than_the_plaintext_and_should_be_used_for_encryption_and_decryption_testing"
+    encrypted = encrypt(original, key)
+    print(f"Encrypted: {encrypted}")
+    decrypted = decrypt(encrypted, key)
+    print(f"Decrypted: {decrypted}")
+    
