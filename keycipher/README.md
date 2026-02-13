@@ -36,3 +36,22 @@ La longitud del keystream afecta directamente la seguridad porque si es mas cort
     * Usar un generador criptograficamente seguro para que el keystream no sea predecible
     * No reutilizar el mismo keystream en diferentes mensajes
     * Proteger y generar las claves con suficiente entropia para evitar filtraciones o ataques de fuerza bruta
+
+
+## Parte 3: Validación y Pruebas (10 puntos)
+
+### 3.1 Ejemplos de Entrada/Salida
+Incluya en su documentación al menos 3 ejemplos que muestren:
+- Texto plano original
+- Texto cifrado (puede mostrarse en formato hexadecimal o base64)
+- Texto descifrado
+- Clave utilizada
+
+![examples](image-4.png)
+
+### 3.2 Pruebas Unitarias
+Implemente pruebas que validen:
+- El descifrado recupera exactamente el mensaje original
+- Diferentes claves producen diferentes textos cifrados
+- La misma clave produce el mismo texto cifrado (determinismo)
+- El cifrado maneja correctamente mensajes de diferentes longitudes
