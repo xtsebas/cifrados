@@ -29,10 +29,18 @@ def decrypt(encrypted, key):
 
 if __name__ == "__main__":
     key = "my_secret_key"
-    second_key = "another_key"
-    original = "Hello, World!"
-    print(f"Original: {original}")
-    encrypted = encrypt(original, key)
+    message1 = "Hello, World!"
+    message2 = "Bye, World!"
+    print(f"First Message: {message1}")
+    encrypted = encrypt(message1, key)
     print(f"Encrypted: {encrypted}")
-    decrypted = decrypt(encrypted, second_key)
-    print(f"Decrypted: {decrypted}")
+
+    print(f"Second Message: {message2}")
+    encrypted2 = encrypt(message2, key)
+    print(f"Encrypted: {encrypted2}")
+
+    decrypted = decrypt(encrypted, key)
+    print(f"Decrypted : {decrypted}")
+
+    decrypted2 = decrypt(encrypted2, key)
+    print(f"Decrypted : {decrypted2}")
