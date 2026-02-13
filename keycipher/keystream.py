@@ -29,9 +29,10 @@ def decrypt(encrypted, key):
 
 if __name__ == "__main__":
     key = "my_secret_key"
+    second_key = "another_key"
     original = "Hello, World!"
     print(f"Original: {original}")
     encrypted = encrypt(original, key)
     print(f"Encrypted: {encrypted}")
-    decrypted = decrypt(encrypted, key)
+    decrypted = decrypt(encrypted, second_key)
     print(f"Decrypted: {decrypted}")
