@@ -1,6 +1,6 @@
 ### Sebastian Huertas 22295
 
-# Ejercicio STEAM
+# Ejercicio STREAM CIPHER
 
 ## Parte 2: Análisis de Seguridad (20 puntos)
 
@@ -82,5 +82,6 @@ En esta investigacion fui apoyado por las herramientas de busqueda en web (Googl
 
 #### Referencias Bibliográficas
 Dworkin, M. (2001). Recommendation for Block Cipher Modes of Operation: Methods and Techniques. NIST Special Publication 800-38A. National Institute of Standards and Technology. https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38a.pdf 
+
 
 Nir, Y., & Langley, A. (2018). ChaCha20 and Poly1305 for IETF Protocols. RFC 8439. Internet Engineering Task Force. https://datatracker.ietf.org/doc/html/rfc8439 
