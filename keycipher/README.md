@@ -55,3 +55,6 @@ Implemente pruebas que validen:
 - Diferentes claves producen diferentes textos cifrados
 - La misma clave produce el mismo texto cifrado (determinismo)
 - El cifrado maneja correctamente mensajes de diferentes longitudes
+
+![test](image-5.png)
+
