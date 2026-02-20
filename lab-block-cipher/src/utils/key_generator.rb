@@ -6,8 +6,7 @@ def generate_des_key
   # Genera una clave DES aleatoria de 8 bytes (64 bits).
   # Nota: DES usa efectivamente 56 bits (los otros 8 son de paridad),
   # pero la clave es de 8 bytes.
-  
-  return true
+  SecureRandom.bytes(8)
 end
 
 def generate_3des_key(key_option: 2)
