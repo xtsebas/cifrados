@@ -1,155 +1,179 @@
-<!--
-PROJECT NAME
--->
-
 # CIFRADOS 2025
 <a id="readme-top"></a>
 
-<!--
-PROJECT DESCRIPTION
--->
 ## 📜 Descripción
 
-CIFRADOS 2025 es un repositorio diseñado para la gestión de material del curso Cifrados del año 2025. En este repositorio se encontraran los ejercicios y ejemplos de la clase, asi como la documentacion del contenido de la clase.
-
-* https://locano-uvg.github.io/cifrados-25/
-
-
-## ✨ Características
-- Documentacion del contenido de la clase
-- Ejercicios
-- Ejemplos
-- Proyectos
-<!-- 
-## 🚀 Instalación y Ejecución
-
-1. Clona este repositorio e instala las dependencias:
-
-    ```bash
-    git clone https://github.com/locano-uvg/stw-25.git
-    cd stw-25
-    ```
-
-2. Para que los ejercicios y ejemplos funcionen correctamente, muchas veces sera necesario configurar variables de entorno en un archivo `.env`
-
-    Crea un archivo .env en la raíz del proyecto y completa las variables de entorno necesarias.
-
-    ```bash
-    # Conexión con MongoDB
-    NEXT_PUBLIC_MONGODB_URI=<URL de MongoDB>
-
-    ```
-
-3. Ejecuta la aplicación en modo desarrollo:
-
-    ```bash
-    npm run dev
-    ```
-
-4. Accede a la aplicación en <http://localhost:3000>.
+Repositorio del curso **Cifrados 2025** — Sebastian Huertas (22295). Contiene implementaciones de algoritmos criptográficos clásicos y modernos, utilidades de conversión, cifrados basados en llaves, un laboratorio de cifrado por bloques y una serie de desafíos CTF resueltos.
 
 ## 📂 Estructura del Proyecto
 
-<details>
-  <summary>Descripción de Carpetas</summary>
-
-La estructura del proyecto está organizada de la siguiente manera:
-
-- **public/**: Archivos estáticos y recursos accesibles públicamente.
-- **src/**
-  - **components/**: Componentes reutilizables de la interfaz de usuario.
-  - **pages/**: Rutas de la aplicación, organizadas en carpetas según su funcionalidad.
-    - **api/**: Endpoints de la API.
-    - **404/**: Página de error 404.
-    - **home/**: Página de inicio de la aplicación.
-    - **login/**: Página de inicio de sesión.
-  - **services/**: Servicios auxiliares, incluyendo el manejo de correos y configuraciones.
-    - **email/**: Servicios para envío de correos electrónicos.
-    - **namesEnums.js, reportTypes.js, world.js**: Archivos de configuración y utilidades.
-  - **styles/**: Archivos CSS para los estilos de la aplicación.
-  
-</details>
-<p align="right">(<a href="#readme-top">Ir al inicio</a>)</p>
- -->
-
-## 📦 Dependencias Principales
-
-Las principales dependencias del proyecto incluyen:
-* [![Node][Node.js]][Node-url]
-* [![Reveal][Reveal-js]][Reveal-url]
-* [![Python][Python]][Python-url]
-<!-- * [![Next][Next.js]][Next-url] -->
-<!-- * [![React][React.js]][React-url] -->
-<!-- * [![Bootstrap][Bootstrap.com]][Bootstrap-url] -->
-<!-- * [![Redux][Redux]][Redux-url] -->
-<!-- * [![MongoDB][MongoDB]][MongoDB-url] -->
-<!-- * [![AntDesign][AntDesign]][AntDesign-url] -->
-<!-- * [![Chartjs][Chartjs]][Chartjs-url] -->
-<!-- - [bcryptjs](https://www.npmjs.com/package/bcryptjs): Encriptación de contraseñas. -->
-<!-- - [exceljs](https://www.npmjs.com/package/exceljs)  -->
-<!-- - [file-saver](https://www.npmjs.com/package/file-saver) : Exportación de datos en formato Excel. -->
-<!-- - [jspdf](https://www.npmjs.com/package/jspdf): Generación de PDFs con tablas. -->
-
-Para más detalles, puedes consultar el archivo `package.json`.
-<p align="right">(<a href="#readme-top">Ir al inicio</a>)</p>
-
-<!-- ## 🛠️ API Endpoints
-<details>
-  <summary>Principales Endpoints</summary>
-  
-  La API está construida utilizando Next.js y organiza sus endpoints en función de las entidades principales del sistema.
-  A continuación se presentan algunos de los endpoints más importantes:
-
-- **api/auth/**: Manejo de autenticación y autorización de usuarios.
-- **api/estadisticas/**: Endpoints para obtener estadísticas detalladas de exploradores e instituciones.
-- **api/reports/**: Endpoints para generar reportes personalizados en formato Excel.
-
-Cada endpoint está diseñado para recibir y responder con datos JSON, permitiendo la integración con los módulos del sistema.
-
-</details>
-<p align="right">(<a href="#readme-top">Ir al inicio</a>)</p> -->
-
-
-## 👥 Contribuciones
-Si deseas contribuir al proyecto, por favor sigue los siguientes pasos:
-1. Realiza un fork del repositorio.
-2.	Crea una nueva rama para tu funcionalidad (git checkout -b feature/nueva-funcionalidad).
-3.	Haz commit de tus cambios (git commit -m 'Añadir nueva funcionalidad').
-4.	Haz push a la rama (git push origin feature/nueva-funcionalidad).
-5.	Abre un Pull Request.
+```
+cifrados/
+├── history-ciphers/        # Cifrados históricos/clásicos
+├── criptografia/           # Biblioteca de utilidades criptográficas
+├── criptografia_keys/      # Cifrados basados en llaves dinámicas
+├── keycipher/              # Laboratorio de Stream Cipher (Keystream)
+├── lab-block-cipher/       # Laboratorio de cifrado por bloques (DES-ECB)
+└── CTF_lab/                # Desafíos Capture The Flag resueltos
+```
 
 <p align="right">(<a href="#readme-top">Ir al inicio</a>)</p>
 
+---
 
+## 🔐 Módulos
+
+### 1. `history-ciphers/` — Cifrados Históricos
+
+Implementaciones en Python de los cifrados clásicos más conocidos.
+
+| Archivo | Descripción |
+|---|---|
+| `cesar.py` | Cifrado César: encriptación y desencriptación por desplazamiento ASCII |
+| `vigenere.py` | Cifrado Vigenère: cifrado polialfabético con llave de texto |
+| `ROT13.py` | ROT13: caso especial del cifrado César con desplazamiento 13 |
+| `frequency.py` | Análisis de frecuencia para atacar cifrados de sustitución |
+| `main.py` | Punto de entrada para ejecutar los ejemplos |
+
+**Uso rápido:**
+```python
+from cesar import cesar_cifrar, cesar_descifrar
+cifrado = cesar_cifrar("HOLA", 3)   # "KROD"
+original = cesar_descifrar(cifrado, 3)  # "HOLA"
+
+from vigenere import vigenere_cifrar, vigenere_descifrar
+cifrado = vigenere_cifrar("HOLA", "CLAVE")
+original = vigenere_descifrar(cifrado, "CLAVE")
+```
+
+---
+
+### 2. `criptografia/` — Utilidades Criptográficas
+
+Biblioteca de utilidades y funciones auxiliares usadas por los demás módulos.
+
+```
+criptografia/
+├── ascii_dict.py              # Diccionario de valores ASCII
+├── codigos.py                 # Códigos y constantes
+├── main.py                    # Ejemplos de uso
+├── conversions/
+│   ├── ascii_conversions.py   # Conversiones entre caracteres, ASCII y binario
+│   └── base64_conversions.py  # Codificación y decodificación Base64
+├── investigation/
+│   └── cipher/
+│       └── xor_operations.py  # Operaciones XOR a nivel de texto y binario
+└── utils/
+```
+
+---
+
+### 3. `criptografia_keys/` — Cifrados con Llaves Dinámicas
+
+Implementaciones de cifrado que utilizan llaves generadas dinámicamente.
+
+| Archivo | Descripción |
+|---|---|
+| `dynamics_keys.py` | Generador de llaves aleatorias (alfanuméricas, etc.) |
+| `dynamic_key_cipher.py` | Cifrador con llave dinámica: XOR, estilo-Vigenère, stream y polialfabético |
+| `fixed_key_cipher.py` | Cifrador con llave fija |
+| `custom_utilities.py` | Utilidades complementarias |
+| `main.py` | Ejemplos y punto de entrada |
+
+**Métodos disponibles en `DynamicKeyCipher`:**
+- `encrypt_xor` / `decrypt_xor` — cifrado XOR directo
+- `encrypt_vigenere_style` / `decrypt_vigenere_style` — cifrado estilo Vigenère
+- `encrypt_stream_cipher` / `decrypt_stream_cipher` — cifrado de flujo
+- `encrypt_polyalphabetic` / `decrypt_polyalphabetic` — cifrado polialfabético
+
+---
+
+### 4. `keycipher/` — Stream Cipher (Keystream)
+
+Laboratorio de cifrado de flujo basado en generación de keystream mediante PRNG.
+
+| Archivo | Descripción |
+|---|---|
+| `keystream.py` | Generador de keystream y funciones `encrypt`/`decrypt` usando XOR |
+| `keystrea_test.py` | Pruebas unitarias (determinismo, diferentes llaves, longitudes) |
+| `examples.py` | Ejemplos de cifrado con llaves de distintas longitudes |
+| `README.md` | Análisis de seguridad: reutilización del keystream, longitud, PRNG vs CSPRNG |
+
+**Uso rápido:**
+```python
+from keystream import encrypt, decrypt
+encrypted = encrypt("Hello, World!", "my_secret_key")
+decrypted = decrypt(encrypted, "my_secret_key")  # "Hello, World!"
+```
+
+---
+
+### 5. `lab-block-cipher/` — Cifrado por Bloques (DES-ECB)
+
+Laboratorio de cifrado por bloques usando DES en modo ECB implementado en Ruby con OpenSSL.
+
+```
+lab-block-cipher/
+├── Gemfile             # Dependencias Ruby (openssl)
+├── Gemfile.lock
+└── src/
+    ├── des_ecb.rb      # Cifrado/descifrado DES-ECB con padding PKCS#7 manual
+    └── utils/
+        ├── manual_padding.rb   # Implementación manual de padding PKCS#7
+        └── key_generator.rb    # Generador de llaves DES
+```
+
+**Instalación y uso:**
+```bash
+cd lab-block-cipher
+bundle install
+ruby src/des_ecb.rb
+```
+
+---
+
+### 6. `CTF_lab/` — Desafíos CTF
+
+Documentación de los desafíos Capture The Flag completados, con desarrollo, análisis y conclusiones.
+
+| Desafío | Tema | Flag |
+|---|---|---|
+| `Challenge1.md` | Exploración de archivos Linux y escalada de privilegios | `FLAG{LINUX_BASICS}` |
+| `Challenge2.md` | Decodificación Base64 | `FLAG{BASE64_DESCIFRADO}` |
+| `Challenge3.md` | Cifrado César y ROT13 | `FLAG{CESAR_CIFRADO}` / `FLAG{SECRET_FLAG_ROOT13}` |
+| `Challenge4.md` | Análisis de frecuencia | `FLAG{CRYPTO_ANALYSIS}` |
+
+---
+
+## 🚀 Requisitos
+
+- **Python 3.8+** — para los módulos `history-ciphers`, `criptografia`, `criptografia_keys` y `keycipher`
+- **Ruby 3.x** + **Bundler** — para el módulo `lab-block-cipher`
+
+## ⚙️ Instalación
+
+```bash
+# Clonar el repositorio
+git clone https://github.com/xtsebas/cifrados.git
+cd cifrados
+
+# Instalar dependencias Ruby (para lab-block-cipher)
+cd lab-block-cipher
+bundle install
+cd ..
+```
+
+No se requiere instalación adicional para los módulos Python; todas las dependencias son de la biblioteca estándar.
+
+<p align="right">(<a href="#readme-top">Ir al inicio</a>)</p>
+
+---
+
+## 👤 Autor
+
+**Sebastian Huertas** — Carné 22295
 
 <!-- MARKDOWN LINKS & IMAGES -->
-[Redux]: https://img.shields.io/badge/Redux-764ABC?style=flat&logo=redux&logoColor=white
-[Redux-url]: https://redux.js.org/
-[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
-[Next-url]: https://nextjs.org/
-[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
-[React-url]: https://reactjs.org/
-[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
-[Bootstrap-url]: https://getbootstrap.com
-[MongoDB]: https://img.shields.io/badge/MongoDB-47A248?style=flat&logo=mongodb&logoColor=white
-[MongoDB-url]: https://www.npmjs.com/package/mongodb
-[Node.js]: https://img.shields.io/badge/Node.js-339933?style=flat&logo=node.js&logoColor=white
-[Node-url]: https://nodejs.org/en/
-[Reveal-js]: https://img.shields.io/badge/Reveal.js-339933?style=flat&logo=reveal.js&logoColor=white
-[Reveal-url]: https://revealjs.com/
 [Python]: https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white
 [Python-url]: https://www.python.org/
-[Instagram]: https://img.shields.io/badge/Instagram-E4405F?style=flat&logo=instagram&logoColor=white
-[Instagram-url]: https://www.instagram.com/ludwing238/
-[Instagram]: https://img.shields.io/badge/Instagram-E4405F?style=flat&logo=instagram&logoColor=white
-[Instagram-url]: https://www.instagram.com/ludwing238/
-[Website]: https://img.shields.io/website?url=https://lc2tech.com/
-[Website-url]: https://lc2tech.com/
-[AntDesign]: https://img.shields.io/badge/-Ant%20Design-333333?style=flat&logo=ant-design&logoColor=0170FE
-[AntDesign-url]: https://ant.design/
-[Chartjs]: https://img.shields.io/badge/chart.js-F5788D.svg?style=for-the-badge&logo=chart.js&logoColor=white
-[Chartjs-url]: https://github.com/reactchartjs/react-chartjs-2
-[Linkedin-lud]: https://www.linkedin.com/in/ludwing-cano238
-[Linkedin]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[Github-lud]: https://github.com/locano
 [GitHub]: https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white
