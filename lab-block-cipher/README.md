@@ -302,3 +302,69 @@ Carol (LOGIN: GUEST!!!): ae4103... <- diferente
 => El atacante sabe que Alice y Bob tienen el mismo login/token sin conocer la clave ni el contenido.
 ```
 ---
+
+## 2.5 Padding. Pregunta: Que es el padding y por que es necesario?
+
+### Que es el padding?
+
+Los cifrados de bloque (DES, AES) operan sobre bloques de tamano fijo: 8 bytes para
+DES y 16 bytes para AES. Si el mensaje no es multiplo exacto del tamano de bloque,
+el ultimo bloque queda incompleto y el cifrador no puede procesarlo. El padding es
+el relleno que se agrega al final del mensaje para completar ese bloque.
+
+---
+
+### Resultados de pkcs7_pad — byte a byte (block_size = 8, DES)
+
+![alt text](image-7.png)
+
+**Mensaje de 5 bytes: `"HELLO"`**
+
+```
+Original (hex)   : 48 45 4c 4c 4f
+Bytes faltantes  : 8 - (5 % 8) = 3  =>  agregar 3 bytes de valor 0x03
+Padded   (hex)   : 48454c4c4f030303
+Desglose         : [48 45 4c 4c 4f] + [03 03 03]
+Tamano padded    : 8 bytes (multiplo de 8)
+unpad == original: true
+```
+
+**Mensaje de 8 bytes: `"12345678"` (bloque exacto)**
+
+```
+Original (hex)   : 31 32 33 34 35 36 37 38
+Bytes faltantes  : 8 - (8 % 8) = 8  =>  agregar 8 bytes de valor 0x08
+Padded   (hex)   : 3132333435363738 0808080808080808
+Desglose         : [31 32 33 34 35 36 37 38] + [08 08 08 08 08 08 08 08]
+Tamano padded    : 16 bytes (multiplo de 8)
+unpad == original: true
+
+Nota: el mensaje ya ocupa un bloque completo, asi que se agrega un bloque
+entero de padding. Esto garantiza que unpad siempre tenga bytes que quitar.
+```
+
+**Mensaje de 10 bytes: `"HOLA MUNDO"`**
+
+```
+Original (hex)   : 48 4f 4c 41 20 4d 55 4e 44 4f
+Bytes faltantes  : 8 - (10 % 8) = 6  =>  agregar 6 bytes de valor 0x06
+Padded   (hex)   : 484f4c41204d554e444f060606060606
+Desglose         : [48 4f 4c 41 20 4d 55 4e 44 4f] + [06 06 06 06 06 06]
+Tamano padded    : 16 bytes (multiplo de 8)
+unpad == original: true
+```
+
+**Demostracion de roundtrip: pkcs7_pad + pkcs7_unpad**
+
+```
+pad -> unpad("HELLO")      => "HELLO"      [OK: true]
+pad -> unpad("12345678")   => "12345678"   [OK: true]
+pad -> unpad("HOLA MUNDO") => "HOLA MUNDO" [OK: true]
+```
+
+La funcion `pkcs7_unpad` lee el ultimo byte del mensaje padded, lo interpreta como
+la cantidad de bytes de padding, y los elimina con `data[0...-pad_len]`. Esto es
+siempre inequivoco porque PKCS#7 garantiza que el ultimo byte tenga exactamente
+el valor de cuantos bytes de padding se agregaron.
+
+---
