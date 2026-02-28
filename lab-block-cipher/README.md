@@ -154,3 +154,66 @@ El codigo esta repartido en dos archivos. Referencia de lineas:
 
 ![alt text](image-3.png)
 
+
+## 2.3 Vulnerabilidad de ECB. Pregunta: ¿Por qué no debemos usar ECB en datos sensibles?
+
+### Bloques identicos producen ciphertext identico
+
+ECB cifra cada bloque de 16 bytes de forma totalmente independiente. Si dos bloques
+del plaintext son iguales, sus ciphertexts seran exactamente iguales con la misma
+clave. Esto rompe la confidencialidad porque un observador puede detectar patrones
+en el ciphertext sin necesidad de conocer la clave.
+
+Mensaje de prueba: `"ATAQUE!!ATAQUE!!"` repetido 3 veces (3 bloques identicos de 16 bytes).
+
+```
+Plaintext:
+  Bloque 0: "ATAQUE!!ATAQUE!!"
+  Bloque 1: "ATAQUE!!ATAQUE!!"   <- identico al bloque 0
+  Bloque 2: "ATAQUE!!ATAQUE!!"   <- identico al bloque 0
+
+ECB — ciphertext:
+  Bloque 0: a3f8... [16 bytes]
+  Bloque 1: a3f8... [16 bytes]   <- IGUAL que bloque 0
+  Bloque 2: a3f8... [16 bytes]   <- IGUAL que bloque 0
+  => Bloque 0 == Bloque 1 == Bloque 2: true
+  => Un atacante sabe que el plaintext se repite, sin descifrar nada.
+
+CBC — ciphertext:
+  IV       : 9c2e... [16 bytes aleatorios]
+  Bloque 0: d471... [16 bytes]
+  Bloque 1: 08ba... [16 bytes]   <- diferente
+  Bloque 2: f3c1... [16 bytes]   <- diferente
+  => Bloque 0 == Bloque 1: false
+  => No se puede inferir ninguna relacion entre bloques.
+```
+
+![alt text](image-4.png)
+
+---
+
+### Que informacion puede filtrar ECB en escenarios reales?
+
+**Escenario 1 — transacciones bancarias**
+
+Un sistema cifra registros de 16 bytes por transaccion con ECB. Dos transferencias
+de $1000 producen exactamente el mismo bloque cifrado. Un atacante que intercepta
+el trafico puede detectar que dos operaciones son identicas sin conocer su contenido,
+contar cuantas veces se repite una operacion, y realizar un ataque de replay
+reenviando un bloque cifrado de $1000 para duplicar la transaccion, porque el
+servidor lo acepta como valido (ECB no tiene integridad ni dependencia de posicion).
+
+**Escenario 2 — cifrado de contrasenas o tokens**
+
+Si una base de datos cifra contrasenas con ECB y la misma clave, dos usuarios con
+la misma contrasena tendran el mismo ciphertext. Un atacante con acceso a la BD
+puede identificar usuarios con contrasenas identicas sin descifrarlas, y usar
+tablas de bloques precomputados de forma similar a rainbow tables.
+
+**Escenario 3 — imagenes y multimedia**
+
+Como demuestra el demo visual (seccion 2.2), los patrones de la imagen original
+siguen siendo visibles en la imagen cifrada con ECB. La estructura del contenido
+queda expuesta aunque no se pueda reproducir directamente.
+
+---
