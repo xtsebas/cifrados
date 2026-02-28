@@ -217,3 +217,88 @@ siguen siendo visibles en la imagen cifrada con ECB. La estructura del contenido
 queda expuesta aunque no se pueda reproducir directamente.
 
 ---
+
+
+## 2.4 Vector de Inicialización (IV). Pregunta: ¿Qué es el IV y por qué es necesario en CBC pero no en ECB?
+
+### Que es el IV?
+
+El IV (Vector de Inicializacion) es un bloque de bytes aleatorios (16 bytes para AES) que se usa como entrada adicional al inicio del cifrado. Su unico requisito es que sea unico por cada operacion de cifrado; no necesita ser secreto.
+
+### Por que ECB no necesita IV?
+
+ECB cifra cada bloque de forma independiente: `C_i = Enc_K(P_i)`. No hay estado
+entre bloques, no hay nada que "inicializar". La consecuencia directa es que ECB
+es completamente determinista: misma clave + mismo plaintext = mismo ciphertext
+siempre, lo cual es precisamente su debilidad.
+
+### Por que CBC necesita IV?
+
+En CBC la formula de cifrado es: `C_i = Enc_K(P_i XOR C_{i-1})`.
+El primer bloque no tiene bloque anterior, por lo que se usa el IV como sustituto:
+`C_0 = Enc_K(P_0 XOR IV)`.
+
+Sin el IV, el primer bloque tambien seria determinista, exponiendo el mismo problema
+que ECB. Con un IV aleatorio y unico por mensaje, incluso el primer bloque produce
+ciphertext diferente cada vez, rompiendo cualquier patron detectable.
+
+---
+
+### Experimento: mismo IV vs IVs distintos
+
+![alt text](image-5.png)
+
+```
+Mensaje   : "Mensaje secreto!!"
+Clave     : AES-256 (32 bytes aleatorios)
+
+EXPERIMENTO 1 — mismo IV dos veces:
+  IV fijo  : be33... [16 bytes]
+  CT_A     : 6f42... [mismo]
+  CT_B     : 6f42... [mismo]
+  CT_A == CT_B: true
+  => IDENTICOS. Reutilizar IV hace CBC tan determinista como ECB.
+
+EXPERIMENTO 2 — IVs distintos:
+  IV1      : 9c2e... [16 bytes]
+  IV2      : a71f... [16 bytes distintos]
+  CT1      : d471...
+  CT2      : 08ba... [completamente diferente]
+  CT1 == CT2: false
+  => DIFERENTES. IVs aleatorios garantizan ciphertexts distintos.
+```
+
+---
+
+### Que pasa si un atacante intercepta mensajes con el mismo IV?
+
+Si un sistema reutiliza el mismo IV con la misma clave, el cifrado pierde
+no-determinismo. Un atacante que intercepta el trafico puede:
+
+1. **Detectar mensajes identicos.** Si dos ciphertexts son iguales, el atacante
+   sabe que los plaintexts son iguales, sin descifrar nada. Esto filtra informacion
+   sobre patrones de comunicacion (ej. el mismo token de sesion, el mismo login,
+   la misma transaccion).
+
+2. **Ataque de IV fijo conocido (CBC IV reuse).** Si el atacante conoce el plaintext
+   de un mensaje anterior (P1, C1, IV), puede verificar hipotesis sobre un nuevo
+   mensaje P2 capturado (C2, mismo IV): si C2[bloque0] == C1[bloque0], entonces
+   P2[bloque0] == P1[bloque0]. Esto permite confirmar o descartar contenido sin
+   descifrar.
+
+3. **TLS BEAST (2011).** Este ataque real explotaba exactamente este problema en
+   TLS 1.0: el IV del siguiente registro era el ultimo bloque del registro anterior
+   (predecible), lo que permitia un ataque de texto plano elegido para recuperar
+   cookies de sesion.
+
+**Ejemplo del experimento 3** (tres sesiones cifradas con el mismo IV):
+![alt text](image-6.png)
+
+```
+Alice (LOGIN: ADMIN!!!): cc6d2a... <- mismo ciphertext
+Bob   (LOGIN: ADMIN!!!): cc6d2a... <- IGUAL que Alice
+Carol (LOGIN: GUEST!!!): ae4103... <- diferente
+
+=> El atacante sabe que Alice y Bob tienen el mismo login/token sin conocer la clave ni el contenido.
+```
+---
