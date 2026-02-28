@@ -86,3 +86,71 @@ src/utils/key_generator.rb
 ![key_generator](image.png)
 
 
+## 2.2 Comparación de Modos de Operación
+
+### Modos implementados por algoritmo
+
+| Algoritmo | Modo | Archivo |
+|-----------|------|---------|
+| DES       | ECB  | `src/des_ecb.rb` |
+| 3DES      | CBC  | `src/des3_cbc.rb` |
+| AES       | ECB y CBC | `src/aes_ecb.rb`, `src/aes_cbc.rb` |
+
+---
+
+### Diferencias fundamentales entre ECB y CBC
+
+**ECB (Electronic Codebook)**
+Cada bloque de 16 bytes del plaintext se cifra de forma completamente independiente con la misma clave. Esto significa que dos bloques con el mismo contenido siempre producen exactamente el mismo ciphertext, sin importar su posicion en el mensaje. No requiere IV.
+
+**CBC (Cipher Block Chaining)**
+Antes de cifrar cada bloque, se hace XOR con el bloque de ciphertext anterior. El primer bloque se combina con un IV aleatorio. Esto rompe cualquier dependencia entre bloques identicos: aunque dos bloques tengan el mismo plaintext, su ciphertext sera diferente porque el resultado previo es distinto en cada posicion.
+
+| Caracteristica        | ECB                        | CBC                          |
+|-----------------------|----------------------------|------------------------------|
+| Bloques independientes| Si                         | No (encadenados)             |
+| IV requerido          | No                         | Si (aleatorio)               |
+| Determinista          | Si (misma clave = mismo CT)| No (IV distinto cada vez)    |
+| Revela patrones       | Si                         | No                           |
+| Parallelizable        | Si (cifrado y descifrado)  | Solo descifrado              |
+
+---
+
+### Se puede notar la diferencia en una imagen?
+
+Si, y de forma muy evidente. La imagen de prueba tiene cuatro cuadrantes de color solido (rojo, verde, azul, blanco). Cada cuadrante contiene miles de pixeles identicos, lo que genera miles de bloques AES con el mismo contenido.
+
+- **ECB**: bloques identicos → ciphertext identico → los cuadrantes siguen siendo
+  visibles como regiones uniformes. La forma y estructura de la imagen original
+  se preserva por completo en la imagen cifrada.
+
+- **CBC**: cada bloque se mezcla con el anterior → aunque el plaintext se repita,
+  el ciphertext es diferente en cada posicion. La imagen cifrada es indistinguible
+  de ruido aleatorio.
+
+### Imagenes de comparacion
+
+| Original | Cifrada con ECB | Cifrada con CBC |
+|----------|----------------|-----------------|
+| ![original](images/demo_original.bmp) | ![ecb](images/demo_ecb.bmp) | ![cbc](images/demo_cbc.bmp) |
+
+---
+
+### Codigo exacto para generar las imagenes
+
+El codigo esta repartido en dos archivos. Referencia de lineas:
+
+**`src/image_cipher.rb` — funciones de cifrado de imagen**
+
+| Funcion | Descripcion |
+|---------|-------------|
+| `encrypt_bmp_ecb` | Lee BMP, cifra pixeles con AES-ECB, escribe resultado |
+| `encrypt_bmp_cbc` | Lee BMP, cifra pixeles con AES-CBC (IV incluido), escribe resultado |
+
+![alt text](image-1.png)
+![alt text](image-2.png)
+
+**`tests/test_image_cipher.rb` — demo que genera los archivos**
+
+![alt text](image-3.png)
+

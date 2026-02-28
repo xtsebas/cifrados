@@ -1,8 +1,10 @@
 require 'minitest/autorun'
+require 'fileutils'
 require_relative '../src/image_cipher'
 require_relative '../src/utils/key_generator'
 
 IMAGES_DIR = File.expand_path('../images', __dir__)
+FileUtils.mkdir_p(IMAGES_DIR)
 
 class TestImageCipher < Minitest::Test
 
