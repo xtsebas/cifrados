@@ -368,3 +368,113 @@ siempre inequivoco porque PKCS#7 garantiza que el ultimo byte tenga exactamente
 el valor de cuantos bytes de padding se agregaron.
 
 ---
+
+## 2.6 Recomendaciones de Uso. Pregunta: ¿En qué situaciones se recomienda cada modo de operación? ¿Cómo elegir un modo seguro en cada lenguaje de programación?
+
+### Tabla comparativa de modos
+
+| Modo | IV / Nonce         | Autenticacion          | Paralelizable (enc) | Paralelizable (dec) | Estado              |
+|------|--------------------|------------------------|---------------------|---------------------|---------------------|
+| ECB  | No                 | No                     | Si                  | Si                  | Obsoleto / Inseguro |
+| CBC  | Si (aleatorio)     | No                     | No                  | Si                  | Aceptable + HMAC    |
+| CTR  | Si (nonce)         | No                     | Si                  | Si                  | Aceptable + HMAC    |
+| GCM  | Si (nonce 96 bits) | Si (tag 128 bits)      | Si                  | Si                  | **Recomendado**     |
+
+### ECB (Electronic Codebook)
+
+Cifra cada bloque de forma independiente. No requiere IV y es paralelizable, pero produce el mismo ciphertext para bloques de plaintext identicos, revelando patrones en los datos. Solo es aceptable para cifrar un unico bloque de datos aleatorio (ej. transporte de otra clave); nunca debe usarse para mensajes con estructura repetida.
+
+**Desventajas:** determinista, revela patrones, sin integridad, vulnerable a replay de bloques.
+
+### CBC (Cipher Block Chaining)
+
+Encadena cada bloque con el ciphertext anterior (`C_i = Enc_K(P_i XOR C_{i-1})`). Oculta patrones y es compatible con sistemas legados. El cifrado es secuencial. Debe combinarse con HMAC (esquema Encrypt-then-MAC) para garantizar integridad.
+
+**Desventajas:** cifrado secuencial, sin integridad inherente, vulnerable a padding oracle si se valida el padding antes que el MAC.
+
+### CTR (Counter Mode)
+
+Convierte el cifrado de bloque en un cifrado de flujo usando un nonce + contador. Completamente paralelizable y sin necesidad de padding. No provee integridad por si solo; debe combinarse con HMAC. El nonce nunca debe reutilizarse con la misma clave.
+
+**Desventajas:** sin integridad inherente, reutilizacion de nonce expone la XOR de dos plaintexts.
+
+### GCM (Galois/Counter Mode) — Modo Recomendado
+
+Modo AEAD que combina CTR (confidencialidad) con GHASH (integridad + autenticidad) en un solo paso. Genera un authentication tag de 128 bits que detecta cualquier modificacion del ciphertext. Paralelizable y adoptado en TLS 1.3 y SSH. Soporta AAD para autenticar datos adicionales en claro sin cifrarlos.
+
+**Desventajas:** reutilizacion de nonce rompe confidencialidad e integridad simultaneamente; el tag debe verificarse antes de usar el plaintext.
+
+### Como elegir un modo
+
+- **Por defecto:** usar AES-256-GCM. Provee confidencialidad, integridad y autenticidad en un solo paso sin necesidad de un HMAC separado.
+- **Si GCM no esta disponible:** usar AES-256-CBC con HMAC-SHA256 en esquema Encrypt-then-MAC (primero cifrar, luego calcular el HMAC sobre el ciphertext).
+- **Nunca usar ECB** para datos que contengan patrones o informacion sensible.
+- **Nunca reutilizar IV/nonce** con la misma clave, independientemente del modo elegido.
+
+---
+
+### Ejemplos de codigo
+
+#### Ruby — AES-256-GCM con OpenSSL
+
+```ruby
+require 'openssl'
+
+def aes_gcm_encrypt(plaintext, key)
+  cipher = OpenSSL::Cipher.new('aes-256-gcm')
+  cipher.encrypt
+  cipher.key    = key
+  nonce         = cipher.random_iv   # 12 bytes (96 bits)
+  cipher.auth_data = ""              # AAD vacio; puede contener metadatos en claro
+  ciphertext    = cipher.update(plaintext.b) + cipher.final
+  tag           = cipher.auth_tag    # 16 bytes de authentication tag
+  nonce + tag + ciphertext           # formato: nonce(12) | tag(16) | ciphertext
+end
+
+def aes_gcm_decrypt(data, key)
+  nonce      = data[0, 12]
+  tag        = data[12, 16]
+  ciphertext = data[28..]
+  cipher = OpenSSL::Cipher.new('aes-256-gcm')
+  cipher.decrypt
+  cipher.key       = key
+  cipher.iv        = nonce
+  cipher.auth_tag  = tag
+  cipher.auth_data = ""
+  cipher.update(ciphertext) + cipher.final
+rescue OpenSSL::Cipher::CipherError
+  raise "Autenticacion fallida: mensaje alterado o clave incorrecta"
+end
+```
+
+La diferencia clave respecto a CBC es que `cipher.auth_tag` verifica automaticamente la integridad al descifrar: si el ciphertext fue modificado, `cipher.final` lanza `OpenSSL::Cipher::CipherError` antes de devolver cualquier dato.
+
+#### Python — AES-256-GCM con la biblioteca `cryptography`
+
+```python
+from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+import os
+
+def aes_gcm_encrypt(plaintext: bytes, key: bytes) -> bytes:
+    nonce = os.urandom(12)                          # 96 bits, unico por mensaje
+    aesgcm = AESGCM(key)
+    # encrypt() agrega el tag de 16 bytes al final del ciphertext automaticamente
+    ciphertext = aesgcm.encrypt(nonce, plaintext, None)  # None = sin AAD
+    return nonce + ciphertext
+
+def aes_gcm_decrypt(data: bytes, key: bytes) -> bytes:
+    nonce      = data[:12]
+    ciphertext = data[12:]   # incluye el tag de 16 bytes al final
+    aesgcm = AESGCM(key)
+    # decrypt() lanza InvalidTag si el mensaje fue alterado; nunca devuelve datos no autenticados
+    return aesgcm.decrypt(nonce, ciphertext, None)
+
+# Uso
+key = AESGCM.generate_key(bit_length=256)
+msg = b"Mensaje confidencial e integro"
+enc = aes_gcm_encrypt(msg, key)
+dec = aes_gcm_decrypt(enc, key)
+assert dec == msg, "Roundtrip fallido"
+```
+
+La biblioteca `cryptography` de Python abstrae el tag automaticamente: `encrypt()` lo concatena al final del ciphertext y `decrypt()` lo verifica antes de devolver el plaintext. Si el tag no coincide, lanza `cryptography.exceptions.InvalidTag` y no expone ningun byte del plaintext no autenticado.
