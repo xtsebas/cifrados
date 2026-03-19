@@ -18,6 +18,6 @@ def save_keys(keys, private_path, public_path, passphrase)
   File.write(private_path, encrypted_pem)
   File.write(public_path,  keys[:public_key].to_pem)
 
-  puts "Clave privada guardada en: #{private_path} (protegida con passphrase)"
+  puts "Clave privada guardada en: #{private_path}"
   puts "Clave publica  guardada en: #{public_path}"
 end

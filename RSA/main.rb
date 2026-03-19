@@ -1,11 +1,12 @@
 require_relative 'keys_generator'
+require_relative 'RSA_cipher'
 
 PASSPHRASE   = 'lab04uvg'
 PRIVATE_PATH = 'private_key.pem'
 PUBLIC_PATH  = 'public_key.pem'
 
 puts "=" * 50
-puts "  Laboratorio RSA - Generacion de claves"
+puts "  Laboratorio RSA"
 puts "=" * 50
 
 puts "\nGenerando par de claves RSA de 2048 bits..."
@@ -37,5 +38,19 @@ rescue => e
 end
 
 puts "\n" + "=" * 50
-puts "  Proceso completado."
+puts "  Cifrado/Descifrado RSA-OAEP"
 puts "=" * 50
+
+mensaje   = "Contrato confidencial - Firma Legal Guatemala"
+pub_pem   = File.read(PUBLIC_PATH)
+priv_pem  = File.read(PRIVATE_PATH)
+
+puts "\nMensaje original : #{mensaje}"
+
+cifrado = rsa_cipher(mensaje, pub_pem)
+puts "Texto cifrado    : #{cifrado}"
+
+descifrado = rsa_decipher(cifrado, priv_pem, PASSPHRASE)
+puts "Texto descifrado : #{descifrado}"
+
+puts "\n[OK] Cifrado y descifrado RSA-OAEP exitoso." if mensaje == descifrado
