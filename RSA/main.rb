@@ -53,4 +53,10 @@ puts "Texto cifrado    : #{cifrado}"
 descifrado = rsa_decipher(cifrado, priv_pem, PASSPHRASE)
 puts "Texto descifrado : #{descifrado}"
 
+cifrado2 = rsa_cipher(mensaje, pub_pem)
+puts "\nCifrado 2       : #{cifrado2}"
+
+decifrado2 = rsa_decipher(cifrado2, priv_pem, PASSPHRASE)
+puts "Descifrado 2     : #{decifrado2}"
+
 puts "\n[OK] Cifrado y descifrado RSA-OAEP exitoso." if mensaje == descifrado

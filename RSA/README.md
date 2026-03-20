@@ -28,3 +28,28 @@ fQIDAQAB
 -----END PUBLIC KEY-----
 ```
 IDAQAB al final es la representación Base64 de 0x010001 = 65537, el exponente público estándar.
+
+### 3. Cifrado y Descifrado Directo con RSA-OAEP
+
+¿Porqué cifrar el mismo mensaje dos veces produce resultados distintos? Demuéstrenlo y expliquen que propiedad de OAEP lo cause
+
+Demostración: mismo mensaje, misma clave publica, dos cifrados distintos:
+
+![rsacipher](image.png)
+
+*(Ambos se descifran correctamente al texto original.)*
+
+Propiedad que lo causa: semilla aleatoria en el padding
+
+OAEP no cifra el mensaje directamente. Antes de aplicar RSA realiza este proceso:
+
+```
+seed (aleatorio, 32 bytes) ──┐
+                              ├─► MGF1(seed) XOR mensaje  → bloque_datos
+mensaje ──────────────────────┘
+                              └─► MGF1(bloque_datos) XOR seed → bloque_seed
+
+RSA cifra: [bloque_seed | bloque_datos]
+```
+
+Cada llamada genera un seed distinto con SecureRandom, por lo que el bloque de entrada a RSA cambia completamente aunque el mensaje sea identico. Esto se denomina cifrado probabilistico: la misma entrada no produce la misma salida, lo que impide ataques de texto cifrado elegido y evita que un atacante distinga si dos mensajes cifrados son iguales.
