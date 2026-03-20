@@ -60,3 +60,23 @@ decifrado2 = rsa_decipher(cifrado2, priv_pem, PASSPHRASE)
 puts "Descifrado 2     : #{decifrado2}"
 
 puts "\n[OK] Cifrado y descifrado RSA-OAEP exitoso." if mensaje == descifrado
+
+
+puts "\n" + "=" * 50
+puts "  Cifrado Hibrido RSA-OAEP + AES-GCM"
+puts "=" * 50
+
+pub_pem  = File.read(PUBLIC_PATH)
+priv_pem = File.read(PRIVATE_PATH)
+
+documento = "Contrato de confidencialidad No. 2025-GT-001"
+puts "\nDocumento original : #{documento}"
+
+paquete = encrypt_document(documento, pub_pem)
+puts "Paquete cifrado    : #{paquete.bytesize} bytes (clave RSA + nonce + tag + ciphertext)"
+
+recuperado = decrypt_document(paquete, priv_pem, PASSPHRASE)
+puts "Documento recuperado: #{recuperado}"
+
+puts "\n[OK] Cifrado hibrido exitoso." if documento == recuperado
+
