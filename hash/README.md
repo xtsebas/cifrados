@@ -33,3 +33,7 @@ MD5 produce un hash de solo 128 bits (32 caracteres hex). Esto lo hace vulnerabl
 2. Colisiones demostradas: Desde 2004 se conocen ataques prácticos de colisión contra MD5. En 2008, investigadores crearon un certificado CA fraudulento usando colisiones MD5. Herramientas públicas como fastcoll generan colisiones en segundos en hardware convencional
 
 Si MediSoft usara MD5 para verificar sus paquetes, un atacante podría entregar un instalador con código malicioso que tenga exactamente el mismo hash MD5 que el original, pasando la verificación sin problema
+
+### Problema 2
+
+![alt text](image-1.png)
