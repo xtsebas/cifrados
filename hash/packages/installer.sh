@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/basX
 # MediSoft v2.1.0 Installer
 # (c) MediSoft S.A. — Distribucion autorizada unicamente a hospitales certificados
 

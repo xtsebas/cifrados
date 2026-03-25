@@ -46,3 +46,14 @@ Si MediSoft usara MD5 para verificar sus paquetes, un atacante podría entregar 
 
 ![alt text](image-3.png)
 
+### Problema 5
+
+![alt text](image-4.png)
+
+#### ¿Por que la firma es valida?
+
+La firma digital se calculó sobre el contenido de SHA256SUMS.txt, no sobre los archivos del paquete directamente. Al modificar installer.sh, el archivo SHA256SUMS.txt no cambió en absoluto, por lo que la firma sigue siendo matemáticamente correcta: la clave pública confirma que ese manifiesto fue producido por MediSoft
+
+#### ¿Qué sucede al ejecutar package_verify?
+
+package_verify recalcula el SHA-256 de cada archivo listado en SHA256SUMS.txt y lo compara contra el hash que MediSoft publicó. Como installer.sh fue modificado, su hash actual es distinto al del manifiesto y aparece como CORRUPTO. El resto de archivos no fueron tocados y aparecen OK

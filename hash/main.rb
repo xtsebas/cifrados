@@ -3,6 +3,7 @@ require_relative 'keys'
 require_relative 'manifest_generator'
 require_relative 'package_verify'
 require_relative 'sign_manifest'
+require_relative 'verify_signature'
 
 puts "\n" + "=" * 70
 puts " PROBLEMA 1: Comparativa de algoritmos de hash"
@@ -37,4 +38,25 @@ PackageVerify.verify
 puts "\n" + "=" * 70
 puts " PROBLEMA 4: Firma digital del manifiesto"
 puts "=" * 70
+ManifestGenerator.generate(PACKAGE_FILES)
 SignManifest.run
+
+puts "\n" + "=" * 70
+puts " PROBLEMA 5: Verificacion de autenticidad - Validar firma"
+puts "=" * 70
+
+puts "\n--- Escenario A: Estado valido ---"
+VerifySignature.verify
+
+puts "\n--- Escenario B: Alteracion del manifiesto (1 caracter) ---"
+VerifySignature.tamper_manifest
+VerifySignature.verify
+VerifySignature.restore_manifest
+
+puts "\n--- Escenario C: Alteracion de archivo del paquete ---"
+puts "[ATAQUE] Modificando 1 byte en packages/installer.sh..."
+PackageVerify.tamper("packages/installer.sh")
+puts "\nCapa 1 - Autenticidad del manifiesto (firma):"
+VerifySignature.verify
+puts "\nCapa 2 - Integridad de archivos (hashes):"
+PackageVerify.verify
