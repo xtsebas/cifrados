@@ -2,6 +2,7 @@ require_relative 'hash_explore'
 require_relative 'keys'
 require_relative 'manifest_generator'
 require_relative 'package_verify'
+require_relative 'sign_manifest'
 
 puts "\n" + "=" * 70
 puts " PROBLEMA 1: Comparativa de algoritmos de hash"
@@ -32,3 +33,8 @@ puts "\n--- Simulando ataque: modificando 1 byte en config.ini ---"
 PackageVerify.tamper("packages/config.ini")
 puts "\n--- Verificacion post-ataque ---"
 PackageVerify.verify
+
+puts "\n" + "=" * 70
+puts " PROBLEMA 4: Firma digital del manifiesto"
+puts "=" * 70
+SignManifest.run
