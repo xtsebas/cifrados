@@ -37,3 +37,8 @@ Si MediSoft usara MD5 para verificar sus paquetes, un atacante podría entregar 
 ### Problema 2
 
 ![alt text](image-1.png)
+
+### Problema 3
+
+![alt text](image-2.png)
+
