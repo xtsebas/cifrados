@@ -1,0 +1,13 @@
+LICENCIA DE USO — MediSoft v2.1.0
+MediSoft S.A. | Guatemala City, Guatemala
+
+Este software esta licenciado exclusivamente para uso en instituciones
+de salud certificadas en Guatemala, Honduras y El Salvador.
+
+Queda prohibida su redistribucion, modificacion o uso fuera del
+entorno hospitalario autorizado. Cualquier alteracion de los archivos
+del paquete constituye una violacion de esta licencia y de las
+regulaciones de dispositivos medicos aplicables.
+
+Numero de serie: MS-2024-GT-00471
+Titular: Hospital General del Seguro Social
